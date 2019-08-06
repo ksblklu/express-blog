@@ -43,8 +43,8 @@ router.post('/', checkNotLogin, function (req, res, next) {
     }
   } catch (e) {
     // 注册失败，异步删除上传的头像
-    fs.unlink(req.files.avatar.path, (err) => {
-      if (err) {
+    fs.unlink(req.files.avatar.path, (e) => {
+      if (e) {
         // req.flash('error', e.message)
       }
     })
@@ -78,7 +78,11 @@ router.post('/', checkNotLogin, function (req, res, next) {
     })
     .catch(function (e) {
       // 注册失败，异步删除上传的头像
-      fs.unlink(req.files.avatar.path)
+      fs.unlink(req.files.avatar.path, (e) => {
+        if (e) {
+          // some work
+        }
+      })
       // 用户名被占用则跳回注册页，而不是错误页
       if (e.message.match('duplicate key')) {
         req.flash('error', '用户名已被占用')
